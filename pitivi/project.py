@@ -1894,6 +1894,10 @@ class Project(Loggable, GES.Project):
         self.pipeline = None
         self.ges_timeline = None
 
+        # Close open thumbnail sqlite connections so they do not leak across
+        # project open/close cycles (previewers BUG-005).
+        ThumbnailCache.close_all()
+
         return res
 
     def set_modification_state(self, state):
